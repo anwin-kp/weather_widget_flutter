@@ -110,7 +110,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
     Map<String, dynamic> queryParameters = {
       'lat': lat.toString(),
       'lon': lon.toString(),
-      'appid': '1335434c2a00b9de35dd15945878eac1',
+      'appid': '<Your Api Key>',
       'units': 'imperial', // Fetch temperature in Fahrenheit
     };
 
