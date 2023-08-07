@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'services/get_weather_icon.dart';
+
 // WeatherData class to hold weather information
 class WeatherData {
   WeatherData({
@@ -126,7 +128,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
         // Extract the temperature and weather description from the data and create a WeatherData object
         WeatherData weatherData = WeatherData(
           temperature: data['main']['temp'].toString(),
-          weatherDescription: data['weather'][0]['main'],
+          weatherDescription: data['weather'][0]['description'],
           date: DateFormat('MMMM d, yyyy').format(DateTime.now()),
         );
         return weatherData;
@@ -142,11 +144,10 @@ class WeatherWidgetState extends State<WeatherWidget> {
   Widget build(BuildContext context) {
     // Get the appropriate weather icon based on the weather description
     Icon weatherIcon = getWeatherIcon(weatherData.weatherDescription);
-
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
-        height: 100,
+        height: 110,
         width: double.infinity,
         child: Card(
           elevation: 0,
@@ -155,7 +156,15 @@ class WeatherWidgetState extends State<WeatherWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          child: Padding(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                colors: [Colors.lightBlue[200]!, Colors.lightBlue[100]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,7 +182,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
                       Text(
                         weatherData.date, // Display the date
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 17,
                           color: Color.fromARGB(150, 0, 0, 0),
                         ),
                       ),
@@ -184,20 +193,24 @@ class WeatherWidgetState extends State<WeatherWidget> {
                         weatherData
                             .weatherDescription, // Display the weather description
                         style: const TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: CupertinoColors.black,
+                          color: Colors.black,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Text(
-                  "${weatherData.temperature}F", // Display the temperature in Fahrenheit
-                  style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: CupertinoColors.black,
+                const SizedBox(width: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "${weatherData.temperature}F", // Display the temperature in Fahrenheit
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ],
@@ -206,131 +219,5 @@ class WeatherWidgetState extends State<WeatherWidget> {
         ),
       ),
     );
-  }
-}
-
-// Method to get the appropriate icon according to the weather
-Icon getWeatherIcon(String condition) {
-  switch (condition) {
-    case 'Clear':
-      return const Icon(
-        CupertinoIcons.sun_max,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Few clouds':
-      return const Icon(
-        CupertinoIcons.cloud_sun,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Scattered clouds':
-      return const Icon(
-        CupertinoIcons.cloud,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Broken clouds':
-      return const Icon(
-        CupertinoIcons.cloud_drizzle,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Overcast clouds':
-      return const Icon(
-        CupertinoIcons.cloud_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Light rain':
-      return const Icon(
-        CupertinoIcons.cloud_rain,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Moderate rain':
-      return const Icon(
-        CupertinoIcons.cloud_rain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Heavy rain':
-      return const Icon(
-        CupertinoIcons.cloud_heavyrain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Light snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Moderate snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Heavy snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Thunderstorm':
-      return const Icon(
-        CupertinoIcons.cloud_bolt_rain,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Mist':
-      return const Icon(
-        CupertinoIcons.cloud_fog,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Fog':
-      return const Icon(
-        CupertinoIcons.cloud_fog_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Haze':
-      return const Icon(
-        CupertinoIcons.sun_haze,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Smoke':
-      return const Icon(
-        CupertinoIcons.cloud_fog,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Drizzle':
-      return const Icon(
-        CupertinoIcons.cloud_drizzle_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Sandstorm':
-      return const Icon(
-        CupertinoIcons.cloud_bolt_rain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Tornado':
-      return const Icon(
-        CupertinoIcons.tornado,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    default:
-      return const Icon(
-        CupertinoIcons.question_circle,
-        size: 40,
-        color: CupertinoColors.black,
-      );
   }
 }
