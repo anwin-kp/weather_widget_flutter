@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'services/get_weather_icon.dart';
+
 // WeatherData class to hold weather information
 class WeatherData {
   WeatherData({
@@ -106,8 +108,8 @@ class WeatherWidgetState extends State<WeatherWidget> {
   Future<WeatherData> getWeatherData(double lat, double lon) async {
     String baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
     Map<String, dynamic> queryParameters = {
-      'lat': lat.toString(),
-      'lon': lon.toString(),
+      'lat': "42.699347",
+      'lon': "-74.938643",
       'appid': '1335434c2a00b9de35dd15945878eac1',
       'units': 'imperial', // Fetch temperature in Fahrenheit
     };
@@ -126,7 +128,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
         // Extract the temperature and weather description from the data and create a WeatherData object
         WeatherData weatherData = WeatherData(
           temperature: data['main']['temp'].toString(),
-          weatherDescription: data['weather'][0]['main'],
+          weatherDescription: data['weather'][0]['description'],
           date: DateFormat('MMMM d, yyyy').format(DateTime.now()),
         );
         return weatherData;
@@ -146,7 +148,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
-        height: 100,
+        height: 150,
         width: double.infinity,
         child: Card(
           elevation: 0,
@@ -206,131 +208,5 @@ class WeatherWidgetState extends State<WeatherWidget> {
         ),
       ),
     );
-  }
-}
-
-// Method to get the appropriate icon according to the weather
-Icon getWeatherIcon(String condition) {
-  switch (condition) {
-    case 'Clear':
-      return const Icon(
-        CupertinoIcons.sun_max,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Few clouds':
-      return const Icon(
-        CupertinoIcons.cloud_sun,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Scattered clouds':
-      return const Icon(
-        CupertinoIcons.cloud,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Broken clouds':
-      return const Icon(
-        CupertinoIcons.cloud_drizzle,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Overcast clouds':
-      return const Icon(
-        CupertinoIcons.cloud_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Light rain':
-      return const Icon(
-        CupertinoIcons.cloud_rain,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Moderate rain':
-      return const Icon(
-        CupertinoIcons.cloud_rain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Heavy rain':
-      return const Icon(
-        CupertinoIcons.cloud_heavyrain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Light snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Moderate snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Heavy snow':
-      return const Icon(
-        CupertinoIcons.snow,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Thunderstorm':
-      return const Icon(
-        CupertinoIcons.cloud_bolt_rain,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Mist':
-      return const Icon(
-        CupertinoIcons.cloud_fog,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Fog':
-      return const Icon(
-        CupertinoIcons.cloud_fog_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Haze':
-      return const Icon(
-        CupertinoIcons.sun_haze,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Smoke':
-      return const Icon(
-        CupertinoIcons.cloud_fog,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Drizzle':
-      return const Icon(
-        CupertinoIcons.cloud_drizzle_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Sandstorm':
-      return const Icon(
-        CupertinoIcons.cloud_bolt_rain_fill,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    case 'Tornado':
-      return const Icon(
-        CupertinoIcons.tornado,
-        size: 40,
-        color: CupertinoColors.black,
-      );
-    default:
-      return const Icon(
-        CupertinoIcons.question_circle,
-        size: 40,
-        color: CupertinoColors.black,
-      );
   }
 }
